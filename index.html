@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <style>
+        body {
+            background-color: #0d0d0d; /* Fondo ultra oscuro para que resalte el neón */
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            justify-content: flex-end; /* Alinea todo a la derecha */
+            padding: 50px;
+            margin: 0;
+            min-height: 100vh;
+        }
+
+        .stack-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 320px;
+        }
+
+        .card {
+            /* Efecto de Vidrio Esmerilado */
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            
+            /* Borde sutil y elegante */
+            border: 1px solid rgba(148, 108, 230, 0.2);
+            border-radius: 16px;
+            padding: 20px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        /* Resplandor lateral con tu color #946CE6 */
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: #946CE6;
+            box-shadow: 0 0 15px #946CE6;
+            opacity: 0.7;
+        }
+
+        .card:hover {
+            transform: translateX(-10px) scale(1.02);
+            background: rgba(148, 108, 230, 0.08);
+            border: 1px solid rgba(148, 108, 230, 0.5);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .card-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #946CE6;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .card-content {
+            font-size: 1.1rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #946CE6;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #946CE6;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="stack-container">
+        <div class="card">
+            <div class="card-title">Frontend Stack</div>
+            <div class="card-content">
+                <span class="status-dot"></span> React & Next.js
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Backend Logic</div>
+            <div class="card-content">
+                <span class="status-dot"></span> Node.js / Python
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Cloud & DevOps</div>
+            <div class="card-content">
+                <span class="status-dot"></span> AWS & Docker
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-title">Intelligence</div>
+            <div class="card-content">
+                <span class="status-dot"></span> Ollama & LLMs
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

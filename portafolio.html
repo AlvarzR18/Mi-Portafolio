@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Alvarz R ✦ Portafolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ===== VARIABLES ===== */
+  :root {
+    --bg: #0a0a12;
+    --bg2: #10101e;
+    --bg3: #16162a;
+    --card: #1a1a2e;
+    --purple: #7c3aed;
+    --purple2: #a855f7;
+    --blue: #3b82f6;
+    --blue2: #60a5fa;
+    --accent: #c084fc;
+    --text: #f0eeff;
+    --text2: #b8b0d8;
+    --text3: #7a72a0;
+    --border: rgba(124,58,237,0.3);
+    --glow: rgba(168,85,247,0.15);
+    --neon-cyan: #00f3ff;
+    --neon-magenta: #ff00e6;
+    --neon-purple: #b700ff;
+  }
+
+  body.light-mode {
+    --bg: #fef9ff;
+    --bg2: #fff5fd;
+    --bg3: #faeef9;
+    --card: #ffffff;
+    --purple: #8b5cf6;
+    --purple2: #a78bfa;
+    --blue: #3b82f6;
+    --blue2: #60a5fa;
+    --accent: #c084fc;
+    --text: #1e1040;
+    --text2: #5b4b8a;
+    --text3: #a08bc2;
+    --border: rgba(139,92,246,0.25);
+    --glow: rgba(168,85,247,0.08);
+    --neon-cyan: #0ea5e9;
+    --neon-magenta: #e879f9;
+    --neon-purple: #a855f7;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    transition: background 0.4s ease, color 0.4s ease;
+    overflow-x: hidden;
+  }
+
+  #stars-canvas {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    pointer-events: none; z-index: 0; opacity: 0.5;
+  }
+  .light-mode #stars-canvas { opacity: 0.2; }
+
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 3rem;
+    background: rgba(10,10,18,0.65);
+    backdrop-filter: blur(16px);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.4s;
+  }
+  .light-mode nav { background: rgba(250,245,255,0.8); }
+
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, var(--purple2), var(--blue2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .nav-links { display: flex; gap: 2rem; align-items: center; }
+  .nav-links a {
+    color: var(--text2); text-decoration: none; font-size: 0.9rem;
+    font-weight: 500; transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .theme-btn {
+    width: 52px; height: 28px; border-radius: 30px;
+    background: var(--card); border: 1px solid var(--border);
+    cursor: pointer; position: relative; padding: 3px;
+  }
+  .theme-btn::after {
+    content: ''; width: 22px; height: 22px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    transition: transform 0.4s;
+    display: block;
+  }
+  .light-mode .theme-btn::after { transform: translateX(24px); }
+
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    padding: 8rem 2rem 4rem;
+    position: relative; z-index: 1; text-align: center;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1px solid var(--border); border-radius: 99px;
+    padding: 6px 20px; font-size: 0.8rem; color: var(--accent);
+    margin-bottom: 2rem; background: var(--glow);
+  }
+  .hero-badge::before {
+    content: ''; width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.4)} }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.8rem, 7vw, 5.2rem);
+    font-weight: 700; line-height: 1.08;
+    margin-bottom: 0.5rem;
+  }
+  .hero-nick {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    background: linear-gradient(135deg, var(--purple2) 0%, var(--blue2) 60%, var(--accent) 100%);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 1rem;
+  }
+  .hero-sub {
+    font-size: clamp(1rem, 2vw, 1.15rem);
+    color: var(--text2); max-width: 600px; line-height: 1.6;
+    margin-bottom: 2rem;
+  }
+  .hero-tags { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom: 2.5rem; }
+  .tag {
+    padding: 6px 18px; border-radius: 99px; font-size: 0.8rem;
+    border: 1px solid var(--border); color: var(--text2); background: var(--glow);
+    transition: all 0.3s;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
+  .btn-primary, .btn-outline {
+    padding: 12px 32px; border-radius: 99px; font-size: 0.9rem;
+    font-weight: 600; cursor: pointer; transition: all 0.3s;
+    text-decoration: none; display: inline-flex; align-items: center; gap: 8px;
+  }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--purple), var(--blue));
+    color: #fff; border: none; box-shadow: 0 4px 20px rgba(124,58,237,0.35);
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(124,58,237,0.5); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  section { position: relative; z-index: 1; }
+  .section-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-label {
+    font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.8rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 700;
+    line-height: 1.2; margin-bottom: 1rem;
+  }
+  .divider { width: 60px; height: 2px; background: linear-gradient(90deg, var(--purple), var(--blue)); margin: 1.5rem 0; }
+
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; margin-top: 2rem; }
+  @media(max-width:768px){ .about-grid { grid-template-columns: 1fr; } }
+  .about-ring {
+    width: 260px; height: 260px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--purple), var(--blue), var(--accent));
+    padding: 3px; margin: 0 auto;
+    animation: spin-slow 12s linear infinite;
+  }
+  .about-ring-inner {
+    width: 100%; height: 100%; border-radius: 50%;
+    background: var(--card);
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 3.5rem;
+    animation: spin-slow-reverse 12s linear infinite;
+  }
+  @keyframes spin-slow { to { transform: rotate(360deg); } }
+  @keyframes spin-slow-reverse { to { transform: rotate(-360deg); } }
+  .stats-row { display: flex; gap: 2rem; margin-top: 2rem; flex-wrap: wrap; }
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--purple2), var(--blue2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  }
+
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 16px; margin-top: 2.5rem; }
+  .skill-chip {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 18px; padding: 18px 12px; text-align: center;
+    transition: all 0.3s; display: flex; flex-direction: column; align-items: center; gap: 8px;
+  }
+  .skill-chip:hover { border-color: var(--accent); transform: translateY(-4px); background: var(--glow); }
+
+  /* ===== PROYECTOS: MINI MUNDOS ===== */
+  .projects-section { background: var(--bg2); position: relative; overflow: hidden; }
+  .projects-section::before {
+    content: ''; position: absolute; inset: 0;
+    background-image: linear-gradient(var(--neon-cyan) 1px, transparent 1px), linear-gradient(90deg, var(--neon-magenta) 1px, transparent 1px);
+    background-size: 40px 40px;
+    opacity: 0.05; pointer-events: none;
+  }
+
+  /* PANEL SECRETO - INVISIBLE POR DEFECTO */
+  .secret-panel {
+    display: none;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(20px);
+    border: 2px solid var(--neon-cyan);
+    border-radius: 28px;
+    padding: 1.8rem;
+    margin-bottom: 2.5rem;
+    box-shadow: 0 0 30px rgba(0,243,255,0.3);
+    animation: glowPulse 1.5s infinite alternate;
+    position: relative;
+    z-index: 20;
+  }
+  .secret-panel.visible { display: block; }
+  @keyframes glowPulse {
+    0% { box-shadow: 0 0 10px rgba(0,243,255,0.2); border-color: rgba(0,243,255,0.5); }
+    100% { box-shadow: 0 0 30px rgba(0,243,255,0.6); border-color: var(--neon-cyan); }
+  }
+  .secret-title {
+    font-size: 1rem;
+    letter-spacing: 2px;
+    color: var(--neon-cyan);
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+  .input-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+  .input-group input, .input-group textarea {
+    flex: 1;
+    background: var(--card);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 60px;
+    padding: 12px 18px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    transition: all 0.3s;
+  }
+  .input-group input:focus, .input-group textarea:focus {
+    border-color: var(--neon-magenta);
+    box-shadow: 0 0 12px rgba(255,0,230,0.3);
+  }
+  .input-group textarea {
+    border-radius: 20px;
+    resize: vertical;
+    min-height: 70px;
+  }
+  .add-btn-secret {
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-purple));
+    border: none;
+    border-radius: 60px;
+    padding: 12px 28px;
+    color: #000;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+  .add-btn-secret:hover { transform: scale(1.02); box-shadow: 0 0 20px var(--neon-cyan); }
+  .close-secret {
+    position: absolute;
+    top: 12px;
+    right: 20px;
+    background: transparent;
+    border: none;
+    color: var(--neon-magenta);
+    font-size: 1.5rem;
+    cursor: pointer;
+    font-weight: bold;
+  }
+  /* navegador futurista */
+  .holo-browser {
+    background: rgba(10, 10, 26, 0.6);
+    backdrop-filter: blur(12px);
+    border-radius: 32px;
+    border: 1px solid rgba(0, 243, 255, 0.4);
+    box-shadow: 0 0 20px rgba(0, 243, 255, 0.2);
+    overflow: hidden;
+    transition: 0.4s;
+    max-width: 920px;
+    margin: 0 auto;
+  }
+  .cyber-bar {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    border-bottom: 1px solid rgba(0, 243, 255, 0.3);
+    flex-wrap: wrap;
+  }
+  .hologram-dots { display: flex; gap: 8px; }
+  .holo-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: var(--neon-cyan);
+    box-shadow: 0 0 6px var(--neon-cyan);
+    animation: pulse-glow 2s infinite;
+  }
+  .holo-dot:nth-child(2) { background: var(--neon-magenta); animation-delay: 0.3s; }
+  .holo-dot:nth-child(3) { background: var(--neon-purple); animation-delay: 0.6s; }
+  @keyframes pulse-glow { 0%,100%{opacity:0.6} 50%{opacity:1;transform:scale(1.1)} }
+  .url-futuristic {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.6);
+    border: 1px solid var(--neon-cyan);
+    border-radius: 40px;
+    padding: 6px 16px;
+    font-family: monospace;
+    font-size: 0.8rem;
+    color: var(--neon-cyan);
+  }
+  .live-badge {
+    background: rgba(255,0,230,0.2);
+    border: 1px solid var(--neon-magenta);
+    border-radius: 30px;
+    padding: 4px 12px;
+    font-size: 0.7rem;
+    color: var(--neon-magenta);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .live-badge::before {
+    content: ''; width: 8px; height: 8px;
+    background: var(--neon-magenta);
+    border-radius: 50%;
+    animation: pulse 1.2s infinite;
+  }
+  .browser-content-future { height: 520px; position: relative; background: #0a0a1a; }
+  .project-iframe-future {
+    width: 100%; height: 100%; border: none;
+    transition: opacity 0.3s; background: white;
+  }
+  .loading-future {
+    position: absolute; inset: 0;
+    display: flex; align-items: center; justify-content: center;
+    background: rgba(10,10,26,0.9);
+    backdrop-filter: blur(4px);
+    gap: 15px; flex-direction: column; z-index: 2;
+  }
+  .neon-spinner {
+    width: 48px; height: 48px;
+    border: 2px solid rgba(0,243,255,0.2);
+    border-top-color: var(--neon-cyan);
+    border-right-color: var(--neon-magenta);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .future-note {
+    display: flex; align-items: center; justify-content: center;
+    gap: 12px; margin: 1.5rem auto 0;
+    padding: 8px 24px;
+    background: rgba(0,243,255,0.08);
+    border: 1px solid rgba(0,243,255,0.4);
+    border-radius: 99px;
+    width: fit-content;
+    font-size: 0.8rem;
+    color: var(--neon-cyan);
+  }
+  .future-nav {
+    display: flex; align-items: center; justify-content: center;
+    gap: 2rem; margin-top: 2rem;
+  }
+  .future-arrow {
+    width: 56px; height: 56px; border-radius: 50%;
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--neon-cyan);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: 0.3s;
+    font-size: 1.3rem; color: var(--neon-cyan);
+  }
+  .future-arrow:hover {
+    background: var(--neon-cyan); color: #000;
+    box-shadow: 0 0 20px var(--neon-cyan);
+    transform: scale(1.1);
+  }
+  .future-dots { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+  .future-dot {
+    width: 10px; height: 10px; border-radius: 50%;
+    background: rgba(0,243,255,0.3);
+    transition: 0.3s; cursor: pointer;
+  }
+  .future-dot.active {
+    background: var(--neon-cyan);
+    box-shadow: 0 0 12px var(--neon-cyan);
+    width: 28px; border-radius: 99px;
+  }
+  .future-desc {
+    margin-top: 2rem;
+    max-width: 860px; margin-left: auto; margin-right: auto;
+    padding: 1.2rem 1.8rem;
+    background: rgba(0,0,0,0.4);
+    backdrop-filter: blur(8px);
+    border-radius: 28px;
+    border: 1px solid rgba(0,243,255,0.3);
+  }
+  .future-info { display: none; animation: fadeSlide 0.4s ease; }
+  .future-info.active { display: block; }
+  @keyframes fadeSlide { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+  .future-proj-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    background: linear-gradient(135deg, var(--neon-cyan), var(--neon-magenta));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 0.5rem;
+  }
+  .future-stack { display: flex; gap: 10px; margin-bottom: 1rem; flex-wrap: wrap; }
+  .future-stack-item {
+    padding: 3px 14px; border-radius: 99px; font-size: 0.7rem;
+    background: rgba(0,243,255,0.1); border: 1px solid rgba(0,243,255,0.4);
+    color: var(--neon-cyan);
+  }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; margin-top: 2.5rem; }
+  @media(max-width:768px){ .contact-grid { grid-template-columns: 1fr; } }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-input, .form-textarea {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 12px 18px;
+    color: var(--text); outline: none;
+  }
+  .social-links { display: flex; flex-direction: column; gap: 1rem; }
+  .social-card {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 20px; padding: 14px 20px;
+    text-decoration: none; color: var(--text2);
+    transition: 0.3s;
+  }
+  .social-card:hover { border-color: var(--accent); transform: translateX(6px); }
+  .footer { text-align: center; border-top: 1px solid var(--border); padding: 2rem; color: var(--text3); font-size: 0.8rem; }
+  .reveal { opacity: 0; transform: translateY(28px); transition: all 0.7s; }
+  .revealed { opacity: 1; transform: none; }
+
+  /* ===== CONTACTO ===== */
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 3rem;
+    margin-top: 2.5rem;
+  }
+  @media(max-width: 768px) { .contact-grid { grid-template-columns: 1fr; } }
+  .contact-form { display: flex; flex-direction: column; gap: 1.2rem; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-label { font-size: 0.8rem; color: var(--text3); font-weight: 500; letter-spacing: 0.05em; }
+  .form-input, .form-textarea {
+    background: var(--card); border: 1px solid var(--border);
+    border-radius: 16px; padding: 12px 18px; font-size: 0.9rem;
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    transition: all 0.3s; outline: none;
+  }
+  .form-input:focus, .form-textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(168,85,247,0.15); }
+  .form-textarea { resize: vertical; min-height: 110px; }
+  .social-links { display: flex; flex-direction: column; gap: 1rem; }
+  .social-card {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+    padding: 14px 20px; text-decoration: none; color: var(--text2);
+    transition: all 0.3s;
+  }
+  .social-card:hover {
+    border-color: var(--accent); transform: translateX(6px);
+    background: var(--glow); color: var(--text);
+  }
+  .social-icon {
+    width: 42px; height: 42px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.3rem; font-weight: bold;
+  }
+  .social-name { font-weight: 600; font-size: 0.9rem; }
+  .social-handle { font-size: 0.75rem; color: var(--text3); margin-top: 2px; }
+  .footer { text-align: center; border-top: 1px solid var(--border); padding: 2rem; color: var(--text3); font-size: 0.8rem; }
+
+  .reveal { opacity: 0; transform: translateY(28px); transition: all 0.7s cubic-bezier(0.2, 0.9, 0.4, 1.1); }
+  .revealed { opacity: 1; transform: none; }
+
+  ::-webkit-scrollbar { width: 5px; }
+  ::-webkit-scrollbar-track { background: var(--bg2); }
+  ::-webkit-scrollbar-thumb { background: var(--purple); border-radius: 99px; }
+</style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+
+<nav>
+  <div class="nav-logo">✦ Alvarz R.</div>
+  <div class="nav-links">
+    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#habilidades">Skills</a>
+    <a href="#proyectos">Mini Mundos</a>
+    <a href="#contacto">Contacto</a>
+    <button class="theme-btn" id="themeBtn"></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">✨ disponibilidad creativa ✨</div>
+  <h1>Alvarz R</h1>
+  <div class="hero-nick">Rosangel Alvarez</div>
+  <div class="hero-sub">Programadora junior creativa · apps Android · sitios web innovadores<br>Experiencias digitales que cuentan historias.</div>
+  <div class="hero-tags"><span class="tag">JavaScript</span><span class="tag">TypeScript</span><span class="tag">Python</span><span class="tag">Next.js</span><span class="tag">Tailwind</span><span class="tag">SQL</span><span class="tag">Docker</span><span class="tag">Android</span></div>
+  <div class="hero-cta"><a href="#proyectos" class="btn-primary">Explorar Mis Mini Mundos ↓</a><a href="#contacto" class="btn-outline">Contáctame</a></div>
+</section>
+
+<section id="sobre-mi"><div class="section-inner"><div class="about-grid"><div><p class="section-label reveal">// sobre mí</p><h2 class="section-title reveal">Código + <em>imaginación</em></h2><div class="divider reveal"></div><p class="section-sub reveal">Soy Alvarz, desarrolladora junior apasionada por el mundo digital. Me encanta crear e innovar con aplicaciones Android y sitios web que combinan funcionalidad con diseño único. Cada proyecto es un mundo diferente por explorar.</p><div class="stats-row reveal"><div class="stat"><div class="stat-num">+12</div><div class="stat-label">Proyectos</div></div><div class="stat"><div class="stat-num">4</div><div class="stat-label">Redes</div></div><div class="stat"><div class="stat-num">100%</div><div class="stat-label">Funcionales</div></div></div></div><div class="about-img-wrap reveal"><div class="about-ring"><div class="about-ring-inner">AR</div></div></div></div></div></section>
+
+<section id="habilidades"><div class="section-inner"><p class="section-label reveal">// tecnologías</p><h2 class="section-title reveal">Mi arsenal creativo</h2><div class="divider reveal"></div><div class="skills-grid reveal"><div class="skill-chip"><span>🟨</span>JavaScript</div><div class="skill-chip"><span>🔷</span>TypeScript</div><div class="skill-chip"><span>🐍</span>Python</div><div class="skill-chip"><span>⚛️</span>Next.js</div><div class="skill-chip"><span>🗄️</span>SQL</div><div class="skill-chip"><span>🐳</span>Docker</div><div class="skill-chip"><span>🎨</span>Tailwind</div><div class="skill-chip"><span>📱</span>Android</div></div></div></section>
+
+<!-- SECCIÓN MINI MUNDOS CON PANEL SECRETO -->
+<section id="proyectos" class="projects-section">
+  <div class="section-inner">
+    <p class="section-label reveal">// PORTAL EXPERIMENTAL</p>
+    <h2 class="section-title reveal">Mis Mini Mundos <span style="color:var(--neon-cyan)">◈</span></h2>
+    <div class="divider reveal"></div>
+
+    <!-- PANEL SECRETO (invisible hasta código 280803) -->
+    <div id="secretAdminPanel" class="secret-panel">
+      <button id="closeSecretBtn" class="close-secret" title="Cerrar panel">✕</button>
+      <div class="secret-title"><span>🔐</span> MODO ADMINISTRADOR — AGREGAR NUEVO MINI MUNDO</div>
+      <div class="input-group">
+        <input type="text" id="secretProjTitle" placeholder="Nombre del proyecto (ej: Mi App futurista)" style="flex:1.2">
+        <input type="url" id="secretProjUrl" placeholder="https://tusitio.com o URL completa" style="flex:2">
+      </div>
+      <div class="input-group">
+        <textarea id="secretProjDesc" rows="2" placeholder="✧ Descripción del proyecto... (opcional)"></textarea>
+      </div>
+      <div class="input-group">
+        <input type="text" id="secretProjTags" placeholder="Tecnologías (separadas por coma, ej: React, Node, Three.js)">
+        <button class="add-btn-secret" id="secretAddBtn">✦ INCORPORAR MINI MUNDO</button>
+      </div>
+      <p style="font-size:0.7rem; color: var(--text3); margin-top: 0.5rem;">✨ El proyecto se cargará dentro del mini navegador y será totalmente funcional.</p>
+    </div>
+
+    <!-- VISOR FUTURISTA -->
+    <div class="futuristic-carousel reveal">
+      <div class="holo-browser">
+        <div class="cyber-bar">
+          <div class="hologram-dots"><span class="holo-dot"></span><span class="holo-dot"></span><span class="holo-dot"></span></div>
+          <div class="url-futuristic" id="urlBarFuture">🌐 selecciona un proyecto</div>
+          <div class="live-badge">LIVE</div>
+        </div>
+        <div class="browser-content-future">
+          <div class="loading-future" id="loadingFuture" style="display:flex"><div class="neon-spinner"></div><div class="loading-text">cargando mundo digital...</div></div>
+          <iframe id="projectIframeFuture" class="project-iframe-future" style="opacity:0" sandbox="allow-same-origin allow-scripts allow-popups allow-forms allow-modals allow-top-navigation allow-downloads"></iframe>
+        </div>
+      </div>
+      <div class="future-note">✦ TOTALMENTE FUNCIONAL — navega, interactúa, prueba tu proyecto en vivo ✦</div>
+      <div class="future-nav">
+        <button class="future-arrow" id="prevBtnFuture">←</button>
+        <div class="future-dots" id="futureDots"></div>
+        <button class="future-arrow" id="nextBtnFuture">→</button>
+      </div>
+    </div>
+    <div class="future-desc" id="futureDescContainer"></div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="section-inner">
+    <p class="section-label reveal">// contacto & redes</p>
+    <h2 class="section-title reveal">Hablemos de tu idea</h2>
+    <div class="divider reveal"></div>
+    <div class="contact-grid reveal">
+      <!-- FORMULARIO que envía a ProtonMail usando mailto: con asunto y cuerpo compuesto -->
+      <div>
+        <p class="section-sub" style="margin-bottom:1.8rem">¿Tienes un proyecto en mente? Escríbeme directamente a mi correo ProtonMail usando este formulario.</p>
+        <form class="contact-form" id="contactForm">
+          <div class="form-group">
+            <label class="form-label">Nombre / Empresa</label>
+            <input class="form-input" type="text" id="contactName" placeholder="ej. Ana García" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tu email (para responderte)</label>
+            <input class="form-input" type="email" id="contactEmail" placeholder="tucorreo@ejemplo.com" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Mensaje o propuesta</label>
+            <textarea class="form-textarea" id="contactMsg" placeholder="Cuéntame sobre tu proyecto, app o sitio web creativo..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary" id="sendBtn">✉️ Enviar mensaje →</button>
+          <small style="color: var(--text3); font-size:0.7rem; margin-top:6px;">Se abrirá tu cliente de correo con destino a Alvarz_R@proton.me</small>
+        </form>
+      </div>
+      <!-- REDES SOCIALES -->
+      <div>
+        <p class="section-sub" style="margin-bottom:1.2rem">Sígueme y descubre más de mi trabajo</p>
+        <div class="social-links">
+          <a href="https://www.facebook.com/profile.php?id=61573284221541&locale=es_LA" target="_blank" class="social-card">
+            <div class="social-icon" style="background:rgba(24,119,242,0.15); color:#1877f2">f</div>
+            <div><div class="social-name">Facebook</div><div class="social-handle">/Alvarz Programacion</div></div>
+          </a>
+          <a href="https://www.instagram.com/alvarz_r18/" target="_blank" class="social-card">
+            <div class="social-icon" style="background:rgba(225,48,108,0.15); color:#e1306c">📷</div>
+            <div><div class="social-name">Instagram</div><div class="social-handle">@alvarz_r18</div></div>
+          </a>
+          <a href="https://tiktok.com/@alejandra.creativa" target="_blank" class="social-card">
+            <div class="social-icon" style="background:rgba(0,0,0,0.2); color:#000">♫</div>
+            <div><div class="social-name">TikTok</div><div class="social-handle">@alejandra.creativa</div></div>
+          </a>
+          <a href="https://es.pinterest.com/alvarzr18/" target="_blank" class="social-card">
+            <div class="social-icon" style="background:rgba(230,0,35,0.15); color:#e60023">📌</div>
+            <div><div class="social-name">Pinterest</div><div class="social-handle">Alvarz_R R</div></div>
+          </a>
+        </div>
+        <div style="margin-top: 1.8rem; background: var(--glow); border-radius: 24px; padding: 1rem; border: 1px solid var(--border); text-align: center;">
+          <i class="fas fa-envelope" style="color: var(--accent);"></i>
+          <p style="font-size:0.8rem; margin-top:6px;">Correo directo: <strong style="color:var(--accent)">Alvarz_R@proton.me</strong></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer"><p>Diseñado con 💜 por Rosangel Alvarez</p>
+<p> Cada Proyecto es un mundo direfente <br> Despues de todo <br> ✨Si Puedes Imaginarlo, Puedes Programarlo✨</p></footer>
+
+<script>
+  // --- ALMACENAMIENTO DE PROYECTOS (persistencia local) ---
+  let projects = [];
+
+  function loadProjectsFromStorage() {
+    const stored = localStorage.getItem('alejandra_mini_mundos_secret');
+    if (stored && JSON.parse(stored).length > 0) {
+      projects = JSON.parse(stored);
+    } else {
+      projects = [
+        
+      ];
+      saveProjectsToStorage();
+    }
+    renderCarousel();
+  }
+
+  function saveProjectsToStorage() {
+    localStorage.setItem('alejandra_mini_mundos_secret', JSON.stringify(projects));
+  }
+
+  function addProject(title, url, description, tagsString) {
+    if (!title.trim()) { alert("Ingresa un nombre para el proyecto"); return false; }
+    if (!url.trim()) { alert("Ingresa la URL del proyecto (https://...)"); return false; }
+    let finalUrl = url.trim();
+    if (!finalUrl.startsWith('http://') && !finalUrl.startsWith('https://')) {
+      finalUrl = 'https://' + finalUrl;
+    }
+    const tags = tagsString ? tagsString.split(',').map(t => t.trim()).filter(t => t) : [];
+    projects.push({
+      title: title.trim(),
+      url: finalUrl,
+      description: description.trim() || "Proyecto agregado dinámicamente. Totalmente funcional.",
+      tags: tags.length ? tags : ["Web", "Interactivo"]
+    });
+    saveProjectsToStorage();
+    renderCarousel();
+    goToProject(projects.length - 1);
+    return true;
+  }
+
+  // Función para eliminar el proyecto actual
+  function deleteCurrentProject() {
+    if (!projects.length) {
+      showNotification("⚠️ No hay proyectos para eliminar.", "#ff00e6");
+      return;
+    }
+    const deletedTitle = projects[currentIdx].title;
+    projects.splice(currentIdx, 1);
+    saveProjectsToStorage();
+    
+    if (projects.length === 0) {
+      currentIdx = 0;
+      renderCarousel();
+      showNotification(`🗑️ "${deletedTitle}" eliminado. No quedan proyectos.`, "#00f3ff");
+    } else {
+      if (currentIdx >= projects.length) currentIdx = projects.length - 1;
+      renderCarousel();
+      goToProject(currentIdx);
+      showNotification(`🗑️ Proyecto "${deletedTitle}" eliminado correctamente.`, "#00f3ff");
+    }
+  }
+
+  function showNotification(msg, color) {
+    const notif = document.createElement('div');
+    notif.textContent = msg;
+    notif.style.position = 'fixed';
+    notif.style.bottom = '20px';
+    notif.style.left = '50%';
+    notif.style.transform = 'translateX(-50%)';
+    notif.style.background = color || 'var(--neon-cyan)';
+    notif.style.color = '#000';
+    notif.style.padding = '10px 24px';
+    notif.style.borderRadius = '99px';
+    notif.style.zIndex = '9999';
+    notif.style.fontWeight = 'bold';
+    notif.style.fontSize = '0.8rem';
+    notif.style.fontFamily = 'monospace';
+    document.body.appendChild(notif);
+    setTimeout(() => notif.remove(), 2500);
+  }
+
+  let currentIdx = 0;
+  const iframe = document.getElementById('projectIframeFuture');
+  const loadingDiv = document.getElementById('loadingFuture');
+  const urlSpan = document.getElementById('urlBarFuture');
+  const dotsContainer = document.getElementById('futureDots');
+  const descContainer = document.getElementById('futureDescContainer');
+
+  function renderCarousel() {
+    dotsContainer.innerHTML = '';
+    descContainer.innerHTML = '';
+    projects.forEach((p, idx) => {
+      const dot = document.createElement('div');
+      dot.className = 'future-dot' + (idx === currentIdx ? ' active' : '');
+      dot.onclick = () => goToProject(idx);
+      dotsContainer.appendChild(dot);
+
+      const infoDiv = document.createElement('div');
+      infoDiv.className = 'future-info' + (idx === currentIdx ? ' active' : '');
+      const tagsHtml = p.tags && p.tags.length ? p.tags.map(t => `<span class="future-stack-item">${escapeHtml(t)}</span>`).join('') : '<span class="future-stack-item">✨ interactivo</span>';
+      infoDiv.innerHTML = `
+        <h3 class="future-proj-title">${escapeHtml(p.title)}</h3>
+        <div class="future-stack">${tagsHtml}</div>
+        <p class="future-desc-text">${escapeHtml(p.description)}</p>
+      `;
+      descContainer.appendChild(infoDiv);
+    });
+    if (projects.length === 0) {
+      dotsContainer.innerHTML = '<div style="color:var(--text3);">✨ Agrega tu primer proyecto (código 280803)</div>';
+      descContainer.innerHTML = '<div class="future-info active"><p>🌟 No hay proyectos aún. Usa el panel secreto para agregar tu primer Mini Mundo.<br><br>💡 Para eliminar un proyecto, estando en él escribe el código <strong style="color:var(--neon-cyan)">2342</strong>.</p></div>';
+      loadingDiv.style.display = 'flex';
+      iframe.style.opacity = '0';
+      urlSpan.textContent = '🌐 sin proyectos';
+    } else {
+      loadProject(currentIdx);
+    }
+  }
+
+  function loadProject(idx) {
+    if (!projects.length) return;
+    const p = projects[idx];
+    urlSpan.textContent = p.url;
+    loadingDiv.style.display = 'flex';
+    iframe.style.opacity = '0';
+    iframe.src = p.url;
+    iframe.onload = () => {
+      loadingDiv.style.display = 'none';
+      iframe.style.opacity = '1';
+    };
+    iframe.onerror = () => {
+      loadingDiv.innerHTML = '<div class="neon-spinner"></div><div class="loading-text">⚠️ Error cargando URL. Verifica acceso.</div>';
+    };
+    document.querySelectorAll('.future-dot').forEach((d, i) => d.classList.toggle('active', i === idx));
+    document.querySelectorAll('.future-info').forEach((d, i) => d.classList.toggle('active', i === idx));
+  }
+
+  function goToProject(idx) {
+    if (!projects.length) return;
+    currentIdx = (idx + projects.length) % projects.length;
+    loadProject(currentIdx);
+  }
+  function nextProject() { goToProject(currentIdx + 1); }
+  function prevProject() { goToProject(currentIdx - 1); }
+
+  function escapeHtml(str) { return str.replace(/[&<>]/g, function(m){ if(m==='&') return '&amp;'; if(m==='<') return '&lt;'; if(m==='>') return '&gt;'; return m;}); }
+
+  // Eventos navegación
+  document.getElementById('prevBtnFuture').onclick = prevProject;
+  document.getElementById('nextBtnFuture').onclick = nextProject;
+
+  // --- CÓDIGOS SECRETOS ---
+  let secretBuffer = "";
+  const secretCodeAdd = "280803";    // Abre panel de agregar
+  const secretCodeDelete = "2342";   // Elimina el proyecto actual
+  
+  const secretPanel = document.getElementById('secretAdminPanel');
+  
+  function checkSecretCode(e) {
+    secretBuffer += e.key;
+    if (secretBuffer.length > 8) { // máx longitud 8 para ambos códigos
+      secretBuffer = secretBuffer.slice(-8);
+    }
+    // Verificar código para ABRIR PANEL (280803)
+    if (secretBuffer === secretCodeAdd) {
+      secretPanel.classList.add('visible');
+      secretBuffer = "";
+      showNotification("🔓 Panel de administración desbloqueado — ahora puedes agregar proyectos", "#00f3ff");
+    }
+    // Verificar código para ELIMINAR proyecto actual (2342)
+    else if (secretBuffer === secretCodeDelete) {
+      if (projects.length > 0) {
+        deleteCurrentProject();
+      } else {
+        showNotification("⚠️ No hay proyectos para eliminar.", "#ff00e6");
+      }
+      secretBuffer = "";
+    }
+  }
+  document.addEventListener('keydown', checkSecretCode);
+
+  // Cerrar panel secreto
+  document.getElementById('closeSecretBtn').onclick = () => {
+    secretPanel.classList.remove('visible');
+  };
+
+  // Agregar proyecto desde panel secreto
+  document.getElementById('secretAddBtn').onclick = () => {
+    const title = document.getElementById('secretProjTitle').value;
+    const url = document.getElementById('secretProjUrl').value;
+    const desc = document.getElementById('secretProjDesc').value;
+    const tags = document.getElementById('secretProjTags').value;
+    if (addProject(title, url, desc, tags)) {
+      document.getElementById('secretProjTitle').value = '';
+      document.getElementById('secretProjUrl').value = '';
+      document.getElementById('secretProjDesc').value = '';
+      document.getElementById('secretProjTags').value = '';
+      showNotification("✨ Nuevo Mini Mundo agregado con éxito", "#00f3ff");
+    }
+  };
+
+  // Theme toggle
+  document.getElementById('themeBtn').addEventListener('click', () => document.body.classList.toggle('light-mode'));
+
+  // Form contacto (ProtonMail)
+  document.getElementById('contactForm').addEventListener('submit', (e) => {
+    e.preventDefault();
+    const name = document.getElementById('contactName').value.trim();
+    const email = document.getElementById('contactEmail').value.trim();
+    const msg = document.getElementById('contactMsg').value.trim();
+    if (!name || !email || !msg) return alert("Completa todos los campos.");
+    window.location.href = `mailto:Alvarz_R@proton.me?subject=Contacto desde portafolio: ${encodeURIComponent(name)}&body=${encodeURIComponent(`Nombre: ${name}\nEmail: ${email}\n\nMensaje:\n${msg}`)}`;
+    alert("📨 Se abrirá tu cliente de correo.");
+  });
+
+  // reveal observer
+  const observer = new IntersectionObserver(entries => entries.forEach(e => e.isIntersecting && e.target.classList.add('revealed')), { threshold: 0.1 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Estrellas animadas
+  const canvas = document.getElementById('stars-canvas'), ctx = canvas.getContext('2d');
+  function resizeCanvas() { canvas.width = window.innerWidth; canvas.height = window.innerHeight; initStars(); }
+  let stars = [];
+  function initStars() { stars = Array.from({ length: 100 }, () => ({ x: Math.random() * canvas.width, y: Math.random() * canvas.height, r: Math.random() * 1.8 + 0.5, alpha: Math.random() })); }
+  function drawStars() { if (!ctx) return; ctx.clearRect(0, 0, canvas.width, canvas.height); stars.forEach(s => { ctx.beginPath(); ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2); ctx.fillStyle = `rgba(180, 160, 255, ${s.alpha * 0.5})`; ctx.fill(); }); requestAnimationFrame(drawStars); }
+  window.addEventListener('resize', () => { resizeCanvas(); });
+  resizeCanvas(); initStars(); drawStars();
+
+  loadProjectsFromStorage();
+</script>
+</body>
+</html>
